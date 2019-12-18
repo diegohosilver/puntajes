@@ -1,0 +1,28 @@
+{
+  "name": "puntajes",
+  "version": "0.1.0",
+  "description": "aplicacion para llevar a cabo los puntajes del torneo sabalero",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron ."
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/le0dime/puntajes.git"
+  },
+  "author": "Diego Silvera de Souza",
+  "license": "GPL-2.0+",
+  "bugs": {
+    "url": "https://github.com/le0dime/puntajes/issues"
+  },
+  "homepage": "https://github.com/le0dime/puntajes#readme",
+  "dependencies": {
+    "bootstrap": "^4.4.1",
+    "jquery": "^3.4.1",
+    "popper.js": "^1.16.0"
+  },
+  "devDependencies": {
+    "electron": "^7.1.5",
+    "electron-store": "^5.1.0"
+  }
+}
