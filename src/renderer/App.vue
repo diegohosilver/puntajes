@@ -7,6 +7,10 @@
 
     <ps-list-players ref="psListPlayers"></ps-list-players>
 
+    <ps-add-games ref="psAddGames"></ps-add-games>
+
+    <ps-list-games ref="psListGames"></ps-list-games>
+
     <div class="jumbotron">
 
       <h1 class="display-4">Bienvenido Sabalero!</h1>
@@ -22,25 +26,25 @@
           class="btn btn-primary btn-md"
           href="#"
           role="button"
-          @click="trigger('player-add-window:open')">Agregar jugador </a>
+          @click="trigger('player-add-window:show')">Agregar jugador </a>
 
         <a
           class="btn btn-secondary btn-md"
           href="#"
           role="button"
-          @click="trigger('player-list-window:open')">Listar jugadores <span class="badge badge-light">{{ playerCount }}</span></a>
+          @click="trigger('player-list-window:show')">Listar jugadores <span class="badge badge-light">{{ playerCount }}</span></a>
 
           <a
           class="btn btn-primary btn-md"
           href="#"
           role="button"
-          @click="trigger('game-add-window:open')">Agregar juego </a>
+          @click="trigger('game-add-window:show')">Agregar juego </a>
 
         <a
           class="btn btn-secondary btn-md"
           href="#"
           role="button"
-          @click="trigger('game-list-window:open')">Listar juego <span class="badge badge-light">{{ gameCount }}</span></a>
+          @click="trigger('game-list-window:show')">Listar juego <span class="badge badge-light">{{ gameCount }}</span></a>
       </p>
 
     </div>
@@ -54,13 +58,17 @@
 import PsConfirmation from './components/confirmation/Confirmation.vue';
 import PsAddPlayers from './components/players/Add.vue';
 import PsListPlayers from './components/players/List.vue';
+import PsAddGames from './components/games/Add.vue';
+import PsListGames from './components/games/List.vue';
 
 export default {
 
   components: {
     PsConfirmation,
     PsAddPlayers,
-    PsListPlayers
+    PsListPlayers,
+    PsAddGames,
+    PsListGames
   },
 
   data() {
@@ -79,7 +87,7 @@ export default {
 
       this.playerCount = this.$players.list().length;
 
-      this.gameCount = this.$events.list().length;
+      this.gameCount = this.$games.list().length;
     },
 
     trigger(name) {
@@ -105,6 +113,12 @@ export default {
             break;
         case 'player-add-window:show':
             this.$refs.psAddPlayers.open();
+            break;
+        case 'game-add-window:show':
+            this.$refs.psAddGames.open();
+            break;
+        case 'game-list-window:show':
+            this.$refs.psListGames.open();
             break;
       }
     }

@@ -21,6 +21,7 @@ import { Utils } from './services/Utils';
 import { Events } from './services/Events';
 import { Notifications } from './services/Notifications';
 import { GameStore } from './services/GameStore';
+import { Game } from './services/Game';
 import { Games } from './services/Games';
 
 // Almacenamientos
@@ -32,6 +33,7 @@ Vue.prototype.$player = new Player(playerStore);
 Vue.prototype.$players = new Players(playerStore);
 Vue.prototype.$gameStore = gameStore;
 Vue.prototype.$games = new Games(gameStore);
+Vue.prototype.$game = new Game(gameStore);
 Vue.prototype.$utils = Utils;
 Vue.prototype.$events = Events;
 Vue.prototype.$notifications = Notifications;

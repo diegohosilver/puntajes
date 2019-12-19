@@ -11,24 +11,12 @@
 
                 <div class="form-group">
 
-                    <label for="playerName">Nombre</label>
+                    <label for="gameName">Nombre</label>
 
-                    <input type="text" class="form-control" :class="inputClass(playerName, playerNameTouched)" id="playerName" v-model="playerName" @input="playerNameTouched = true">
+                    <input type="text" class="form-control" :class="inputClass(gameName, gameNameTouched)" id="gameName" v-model="gameName" @input="gameNameTouched = true">
 
-                    <div v-if="playerNameTouched" :class="feedbackClass(playerName)">
-                        {{ feedbackMessage(playerName) }}
-                    </div>
-
-                </div>
-
-                <div class="form-group">
-
-                    <label for="playerTag">Tag</label>
-
-                    <input type="text" class="form-control" :class="inputClass(playerTag, playerTagTouched)" id="playerTag" v-model="playerTag" @input="playerTagTouched = true">
-
-                    <div v-if="playerTagTouched" :class="feedbackClass(playerTag)">
-                        {{ feedbackMessage(playerTag) }}
+                    <div v-if="gameNameTouched" :class="feedbackClass(gameName)">
+                        {{ feedbackMessage(gameName) }}
                     </div>
 
                 </div>
@@ -38,7 +26,7 @@
         </template>
 
         <template v-slot:footer>
-            <button type="button" class="btn btn-sm btn-primary" :class="{'disabled': !canSave}" :disabled="!canSave" @click="save">Agregar jugador</button>
+            <button type="button" class="btn btn-sm btn-primary" :class="{'disabled': !canSave}" :disabled="!canSave" @click="save">Agregar juego</button>
             <button type="button" class="btn btn-sm btn-secondary" @click="close">Cerrar</button>
         </template>
 
@@ -59,25 +47,21 @@ export default {
         return {
             isOpen: false,
 
-            playerNameTouched: false,
+            gameNameTouched: false,
 
-            playerName: undefined,
-
-            playerTagTouched: false,
-
-            playerTag: undefined
+            gameName: undefined,
         }
     },
 
     computed: {
         title() {
 
-            return 'Agregar jugadores';
+            return 'Agregar juegos';
         },
 
         canSave() {
 
-            return !!(this.playerName) && !!(this.playerTag);
+            return !!(this.gameName);
         }
     },
 
@@ -88,13 +72,9 @@ export default {
 
         defaultState() {
 
-            this.playerNameTouched = false;
+            this.gameNameTouched = false;
 
-            this.playerName = undefined;
-
-            this.playerTagTouched = false;
-
-            this.playerTag = undefined;
+            this.gameName = undefined;
         },
 
         close() {
@@ -105,11 +85,11 @@ export default {
 
         save() {
 
-            this.$player.add(this.playerName, this.playerTag);
+            this.$game.add(this.gameName);
 
-            this.$events.emit('event:trigger', {name: 'player:add'});
+            this.$events.emit('event:trigger', {name: 'game:add'});
 
-            this.$notifications.success('Jugador agregado');
+            this.$notifications.success('Juego agregado');
 
             this.defaultState();
         },
