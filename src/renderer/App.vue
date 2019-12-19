@@ -22,13 +22,25 @@
           class="btn btn-primary btn-md"
           href="#"
           role="button"
-          @click="addPlayer">Agregar jugador </a>
+          @click="trigger('player-add-window:open')">Agregar jugador </a>
 
         <a
           class="btn btn-secondary btn-md"
           href="#"
           role="button"
-          @click="listPlayers">Listar jugadores <span class="badge badge-light">{{ playerCount }}</span></a>
+          @click="trigger('player-list-window:open')">Listar jugadores <span class="badge badge-light">{{ playerCount }}</span></a>
+
+          <a
+          class="btn btn-primary btn-md"
+          href="#"
+          role="button"
+          @click="trigger('game-add-window:open')">Agregar juego </a>
+
+        <a
+          class="btn btn-secondary btn-md"
+          href="#"
+          role="button"
+          @click="trigger('game-list-window:open')">Listar juego <span class="badge badge-light">{{ gameCount }}</span></a>
       </p>
 
     </div>
@@ -57,24 +69,22 @@ export default {
 
       playerCount: 0,
 
+      gameCount: 0
     };
   },
 
   methods: {
 
-    addPlayer() {
-
-      this.$refs.psAddPlayers.open();
-    },
-
-    listPlayers() {
-
-      this.$refs.psListPlayers.open();
-    },
-
-    getPlayerCount() {
+    getCounters() {
 
       this.playerCount = this.$players.list().length;
+
+      this.gameCount = this.$events.list().length;
+    },
+
+    trigger(name) {
+
+      this.onEvent({name});
     },
 
     onEvent({name, value}) {
@@ -83,10 +93,18 @@ export default {
 
         case 'player:add':
         case 'player:deleted':
-            this.getPlayerCount();
+        case 'game:add':
+        case 'game:deleted':
+            this.getCounters();
             break;
-        case 'confirmation:show':
+        case 'confirmation-window:show':
             this.$refs.psConfirmation.open(value);
+            break;
+        case 'player-list-window:show':
+            this.$refs.psListPlayers.open();
+            break;
+        case 'player-add-window:show':
+            this.$refs.psAddPlayers.open();
             break;
       }
     }
@@ -94,7 +112,7 @@ export default {
 
   created() {
 
-    this.getPlayerCount();
+    this.getCounters();
 
     this.$events.on('event:trigger', this.onEvent);
   }
