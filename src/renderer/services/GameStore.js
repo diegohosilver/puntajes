@@ -25,6 +25,18 @@ export class GameStore extends Store {
         return this.saveGames();
     }
 
+    setPinStatus(id, isPinned) {
+
+        let index = this.games.findIndex(t => t.id == id);
+
+        if (index > -1) {
+
+            this.games[index].isPinned = isPinned;
+
+            return this.saveGames();
+        }
+    }
+
     deleteGame(game) {
         this.games = this.games.filter(t => t.id !== game.id);
 

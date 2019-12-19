@@ -49,6 +49,22 @@
 
     </div>
 
+    <div class="jumbotron">
+
+      <div class="row">
+        <div class="col-3" v-for="game in pinnedGames">
+
+          <div class="card">
+            <div class="card-body">
+              <h5 class="card-title">{{game.name}}</h5>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+    </div>
+
   </div>
 
 </template>
@@ -77,7 +93,9 @@ export default {
 
       playerCount: 0,
 
-      gameCount: 0
+      gameCount: 0,
+
+      pinnedGames: []
     };
   },
 
@@ -88,6 +106,11 @@ export default {
       this.playerCount = this.$players.list().length;
 
       this.gameCount = this.$games.list().length;
+    },
+
+    getPinnedGames() {
+
+      this.pinnedGames = this.$games.listPinned();
     },
 
     trigger(name) {
@@ -104,6 +127,10 @@ export default {
         case 'game:add':
         case 'game:deleted':
             this.getCounters();
+            this.getPinnedGames();
+            break;
+        case 'game:pinned':
+            this.getPinnedGames();
             break;
         case 'confirmation-window:show':
             this.$refs.psConfirmation.open(value);
@@ -127,6 +154,8 @@ export default {
   created() {
 
     this.getCounters();
+
+    this.getPinnedGames();
 
     this.$events.on('event:trigger', this.onEvent);
   }

@@ -140,8 +140,4 @@ export default {
 </script>
 <style lang="scss">
 
-    .invalid-feedback, 
-    .valid-feedback {
-        display: block !important;
-    }
 </style>

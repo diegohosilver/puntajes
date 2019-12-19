@@ -10,4 +10,14 @@ export class Game {
 
         this.gameStore.addGame({id, name});
     }
+
+    pin(id) {
+        
+        this.gameStore.setPinStatus(id, true);
+    }
+
+    unpin(id) {
+        
+        this.gameStore.setPinStatus(id, false);
+    }
 }

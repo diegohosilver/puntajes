@@ -13,7 +13,11 @@
             <ul class="list-group">
                 <li v-for="(game, index) in games" class="list-group-item d-flex justify-content-between align-items-center">
                     <span class="text-success">{{game.name}}</span>
-                    <span class="badge badge-danger badge-pill" @click="confirmDelete(index, game)"><i class="fas fa-times"></i></span>
+                    <span>
+                        <button v-if="!game.isPinned" class="btn btn-sm btn-primary" @click="pinGame(game)">Fijar</button>
+                        <button v-else class="btn btn-sm btn-primary" @click="unpinGame(game)">Remover</button>
+                        <span class="badge badge-danger badge-pill" @click="confirmDelete(index, game)"><i class="fas fa-times"></i></span>
+                    </span>
                 </li>
             </ul>
 
@@ -151,6 +155,24 @@ export default {
             this.$notifications.success(`Todos los juegos han sido eliminados con éxito`);
 
             this.$events.emit('event:trigger', {name: 'game:deleted'});
+        },
+
+        pinGame(game) {
+
+            game.isPinned = true;
+
+            this.$game.pin(game.id);
+
+            this.$events.emit('event:trigger', {name: 'game:pinned'});
+        },
+
+        unpinGame(game) {
+
+            game.isPinned = false;
+
+            this.$game.unpin(game.id);
+
+            this.$events.emit('event:trigger', {name: 'game:pinned'});
         }
     },
 

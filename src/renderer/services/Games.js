@@ -8,4 +8,9 @@ export class Games {
 
         return this.gameStore.getGames().games;
     }
+
+    listPinned() {
+
+        return this.gameStore.getGames().games.filter(x => x.isPinned);
+    }
 }
