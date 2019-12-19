@@ -1,41 +1,39 @@
-const Store = require('electron-store');
+import Store from 'electron-store';
 
-class DataStore extends Store {
+export class PlayerStore extends Store {
     constructor(settings) {
         super(settings);
-
-        this.players = this.get('players');
-        this.games = this.get('games');
+        
+        this.getPlayers();
     }
 
     savePlayers() {
-
         this.set('players', this.players);
 
-        // Permitir encadenamiento de métodos
         return this;
     }
 
     getPlayers() {
-
         this.players = this.get('players') || [];
 
         return this;
     }
 
     addPlayer(player) {
-
         this.players = [...this.players, player];
 
         return this.savePlayers();
     }
 
     deletePlayer(player) {
-        
-        this.players = this.players.filter(p => p !== player);
+        this.players = this.players.filter(t => t.id !== player.id);
+
+        return this.savePlayers();
+    }
+
+    deleteAllPlayers() {
+        this.players = [];
 
         return this.savePlayers();
     }
 }
-
-module.exports = DataStore;

@@ -1,28 +1,33 @@
 {
-  "name": "puntajes",
+  "name": "electron-webpack-vuejs",
   "version": "0.1.0",
-  "description": "aplicacion para llevar a cabo los puntajes del torneo sabalero",
-  "main": "main.js",
+  "description": "",
+  "main": "index.js",
   "scripts": {
-    "start": "electron ."
+    "start": "electron-webpack dev",
+    "build": "electron-webpack && electron-builder -c.mac.identity=null"
   },
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/le0dime/puntajes.git"
-  },
-  "author": "Diego Silvera de Souza",
-  "license": "GPL-2.0+",
-  "bugs": {
-    "url": "https://github.com/le0dime/puntajes/issues"
-  },
-  "homepage": "https://github.com/le0dime/puntajes#readme",
-  "dependencies": {
-    "bootstrap": "^4.4.1",
-    "jquery": "^3.4.1",
-    "popper.js": "^1.16.0"
-  },
+  "author": "Kyle Robinson Young <kyle@dontkry.com> (http://dontkry.com)",
+  "license": "MIT",
   "devDependencies": {
-    "electron": "^7.1.5",
-    "electron-store": "^5.1.0"
+    "@fortawesome/fontawesome-free": "^5.12.0",
+    "bootstrap-css-only": "^4.3.1",
+    "css-loader": "^3.4.0",
+    "electron": "^2.0.2",
+    "electron-builder": "^20.15.1",
+    "electron-store": "^5.1.0",
+    "electron-webpack": "^2.1.2",
+    "node-sass": "^4.13.0",
+    "sass-loader": "^8.0.0",
+    "style-loader": "^1.0.2",
+    "vue": "^2.5.16",
+    "vue-loader": "^15.2.2",
+    "vue-template-compiler": "^2.5.16",
+    "webpack": "^4.9.1"
+  },
+  "dependencies": {
+    "jquery": "^3.4.1",
+    "source-map-support": "^0.5.6",
+    "toastr": "^2.1.4"
   }
 }
