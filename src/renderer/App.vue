@@ -80,6 +80,8 @@ export default {
     this.getPlayerCount();
 
     this.$events.on('player:add', this.getPlayerCount);
+
+    this.$events.on('player:deleted', this.getPlayerCount);
   }
 };
 </script>

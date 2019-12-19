@@ -26,7 +26,7 @@ export class PlayerStore extends Store {
     }
 
     deletePlayer(player) {
-        this.players = this.players.filter(t => t !== player);
+        this.players = this.players.filter(t => t.id !== player.id);
 
         return this.savePlayers();
     }

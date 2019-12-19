@@ -11,15 +11,23 @@
         <template v-slot:body>
 
             <ul class="list-group">
-                <li v-for="player in players" class="list-group-item d-flex justify-content-between align-items-center">
+                <li v-for="(player, index) in players" class="list-group-item d-flex justify-content-between align-items-center">
                     {{player.name}}
-                    <span class="badge badge-danger badge-pill" @click="deletePlayer(player)"><i class="fas fa-times"></i></span>
+                    <span class="badge badge-danger badge-pill" @click="deletePlayer(index, player)"><i class="fas fa-times"></i></span>
                 </li>
             </ul>
+
+            <div v-if="!hasPlayers" class="alert alert-primary" role="alert">
+                No hay jugadores registrados!
+            </div>
 
         </template>
 
         <template v-slot:footer>
+
+            <button type="button" class="btn btn-danger" :class="{'disabled': !hasPlayers}">Eliminar todos</button>
+
+            <button type="button" class="btn btn-secondary" @click="close">Cerrar</button>
 
         </template>
 
@@ -48,6 +56,11 @@ export default {
 
     computed: {
 
+        hasPlayers() {
+
+            return this.players.length > 0;
+        },
+
         title() {
 
             return 'Listar jugadores';
@@ -60,7 +73,7 @@ export default {
 
             this.isOpen = true;
 
-            this.list();
+            this.players = this.$players.list();
         },
 
         close() {
@@ -70,16 +83,13 @@ export default {
             this.isOpen = false;
         },
 
-        list() {
-
-            this.players = this.$players.list();
-        },
-
-        deletePlayer(player) {
+        deletePlayer(index, player) {
 
             this.$playerStore.deletePlayer(player);
 
-            this.list();
+            this.$delete(this.players, index);
+
+            this.$events.emit('player:deleted');
         }
     }
 }
