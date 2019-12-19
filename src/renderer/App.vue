@@ -1,6 +1,8 @@
 <template>
   <div class="container-fluid mt-3">
 
+    <ps-confirmation ref="psConfirmation"></ps-confirmation>
+
     <ps-add-players ref="psAddPlayers"></ps-add-players>
 
     <ps-list-players ref="psListPlayers"></ps-list-players>
@@ -37,13 +39,14 @@
 
 <script>
 
+import PsConfirmation from './components/confirmation/Confirmation.vue';
 import PsAddPlayers from './components/players/Add.vue';
 import PsListPlayers from './components/players/List.vue';
 
 export default {
 
   components: {
-
+    PsConfirmation,
     PsAddPlayers,
     PsListPlayers
   },
@@ -72,6 +75,20 @@ export default {
     getPlayerCount() {
 
       this.playerCount = this.$players.list().length;
+    },
+
+    onEvent({name, value}) {
+
+      switch(name) {
+
+        case 'player:add':
+        case 'player:deleted':
+            this.getPlayerCount();
+            break;
+        case 'confirmation:show':
+            this.$refs.psConfirmation.open(value);
+            break;
+      }
     }
   },
 
@@ -79,9 +96,7 @@ export default {
 
     this.getPlayerCount();
 
-    this.$events.on('player:add', this.getPlayerCount);
-
-    this.$events.on('player:deleted', this.getPlayerCount);
+    this.$events.on('event:trigger', this.onEvent);
   }
 };
 </script>

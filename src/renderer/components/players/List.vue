@@ -12,8 +12,10 @@
 
             <ul class="list-group">
                 <li v-for="(player, index) in players" class="list-group-item d-flex justify-content-between align-items-center">
-                    {{player.name}}
-                    <span class="badge badge-danger badge-pill" @click="deletePlayer(index, player)"><i class="fas fa-times"></i></span>
+                    <span>
+                        <span class="text-success">{{player.name}}</span> - <span class="text-primary">{{player.tag}}</span>
+                    </span>
+                    <span class="badge badge-danger badge-pill" @click="confirmDelete(index, player)"><i class="fas fa-times"></i></span>
                 </li>
             </ul>
 
@@ -25,9 +27,9 @@
 
         <template v-slot:footer>
 
-            <button type="button" class="btn btn-danger" :class="{'disabled': !hasPlayers}">Eliminar todos</button>
+            <button type="button" class="btn btn-sm btn-danger" :class="{'disabled': !hasPlayers}" :disabled="!hasPlayers" @click="confirmDeleteAll">Eliminar todos</button>
 
-            <button type="button" class="btn btn-secondary" @click="close">Cerrar</button>
+            <button type="button" class="btn btn-sm btn-secondary" @click="close">Cerrar</button>
 
         </template>
 
@@ -50,7 +52,11 @@ export default {
 
             isOpen: false,
 
-            players: []
+            players: [],
+
+            indexToDelete: undefined,
+
+            playerToDelete: undefined
         }
     },
 
@@ -83,14 +89,78 @@ export default {
             this.isOpen = false;
         },
 
-        deletePlayer(index, player) {
+        buildConfirmation() {
 
-            this.$playerStore.deletePlayer(player);
+            return {
+                title: 'Eliminar jugador',
+                message: `¿Está seguro que desea eliminar a <b class="text-success">${this.playerToDelete.name}</b> (tag <b class="text-primary">${this.playerToDelete.tag}</b>)?`,
+                event: 'player-delete'
+            };
+        },
 
-            this.$delete(this.players, index);
+        buildConfirmationBulk() {
 
-            this.$events.emit('player:deleted');
+            return {
+                title: 'Eliminar todos los jugadores',
+                message: `¿Está seguro que desea eliminar <b class="text-danger">todos</b> los jugadores registrados?`,
+                event: 'player-bulk-delete'
+            }
+        },
+
+        confirmDelete(index, player) {
+
+            this.indexToDelete = index;
+
+            this.playerToDelete = player;
+
+            this.isOpen = false;
+
+            this.$events.emit('event:trigger', {name: 'confirmation:show', value: this.buildConfirmation()});
+        },
+
+        confirmDeleteAll() {
+
+            this.isOpen = false;
+
+            this.$events.emit('event:trigger', {name: 'confirmation:show', value: this.buildConfirmationBulk()});
+        },
+
+        deletePlayer({value}) {
+
+            this.isOpen = true;
+
+            if (!value) return; // no eliminar el jugador
+
+            this.$playerStore.deletePlayer(this.playerToDelete);
+
+            this.$delete(this.players, this.indexToDelete);
+
+            this.$notifications.success(`Jugador <b>${this.playerToDelete.name}</b> (tag ${this.playerToDelete.tag}) eliminado con éxito`);
+
+            this.$events.emit('event:trigger', {name: 'player:deleted'});
+        },
+
+        deleteAllPlayers({value}) {
+
+            this.isOpen = true;
+
+            if (!value) return; // no eliminar jugadores
+
+            this.$playerStore.deleteAllPlayers();
+
+            this.players.splice(0, this.players.length);
+
+            this.$notifications.success(`Todos los jugadores han sido eliminados con éxito`);
+
+            this.$events.emit('event:trigger', {name: 'player:deleted'});
         }
+    },
+
+    created() {
+
+        this.$events.on('confirmation:player-delete', this.deletePlayer);
+
+        this.$events.on('confirmation:player-bulk-delete', this.deleteAllPlayers);
     }
 }
 

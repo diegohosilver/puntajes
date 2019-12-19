@@ -38,8 +38,8 @@
         </template>
 
         <template v-slot:footer>
-            <button type="button" class="btn btn-primary" :class="{'disabled': !canSave}" @click="save">Agregar jugador</button>
-            <button type="button" class="btn btn-secondary" @click="close">Cerrar</button>
+            <button type="button" class="btn btn-sm btn-primary" :class="{'disabled': !canSave}" :disabled="!canSave" @click="save">Agregar jugador</button>
+            <button type="button" class="btn btn-sm btn-secondary" @click="close">Cerrar</button>
         </template>
 
     </ps-modal>
@@ -102,7 +102,7 @@ export default {
 
             this.$player.add(this.playerName, this.playerTag);
 
-            this.$events.emit('player:add');
+            this.$events.emit('event:trigger', {name: 'player:add'});
 
             this.$notifications.success('Jugador agregado');
 

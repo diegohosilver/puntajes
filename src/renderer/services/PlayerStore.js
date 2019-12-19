@@ -30,4 +30,10 @@ export class PlayerStore extends Store {
 
         return this.savePlayers();
     }
+
+    deleteAllPlayers() {
+        this.players = [];
+
+        return this.savePlayers();
+    }
 }
