@@ -1,7 +1,9 @@
 <template>
   <div class="container-fluid mt-3">
 
-    <ps-players ref="psPlayers"></ps-players>
+    <ps-add-players ref="psAddPlayers"></ps-add-players>
+
+    <ps-list-players ref="psListPlayers"></ps-list-players>
 
     <div class="jumbotron">
 
@@ -18,7 +20,13 @@
           class="btn btn-primary btn-md"
           href="#"
           role="button"
-          @click="goToPlayers">Agregar jugador <span class="badge badge-light">{{ playerCount }}</span></a>
+          @click="addPlayer">Agregar jugador </a>
+
+        <a
+          class="btn btn-secondary btn-md"
+          href="#"
+          role="button"
+          @click="listPlayers">Listar jugadores <span class="badge badge-light">{{ playerCount }}</span></a>
       </p>
 
     </div>
@@ -28,13 +36,16 @@
 </template>
 
 <script>
-import PsPlayers from './components/players/Players.vue';
+
+import PsAddPlayers from './components/players/Add.vue';
+import PsListPlayers from './components/players/List.vue';
 
 export default {
 
   components: {
 
-    PsPlayers
+    PsAddPlayers,
+    PsListPlayers
   },
 
   data() {
@@ -48,14 +59,19 @@ export default {
 
   methods: {
 
-    goToPlayers() {
+    addPlayer() {
 
-      this.$refs.psPlayers.open();
+      this.$refs.psAddPlayers.open();
+    },
+
+    listPlayers() {
+
+      this.$refs.psListPlayers.open();
     },
 
     getPlayerCount() {
 
-      this.playerCount = this.$player.list().length;
+      this.playerCount = this.$players.list().length;
     }
   },
 

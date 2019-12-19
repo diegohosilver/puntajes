@@ -135,11 +135,6 @@ export default {
 </script>
 <style lang="scss">
 
-    .modal {
-        background: linear-gradient( rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7) );
-        display: block !important;
-    }
-
     .invalid-feedback, 
     .valid-feedback {
         display: block !important;

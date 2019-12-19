@@ -1,7 +1,7 @@
 <template>
 
     <div class="modal" tabindex="-1" role="dialog">
-        <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-dialog modal-dialog-centered" :class="modalClasses" role="document">
             <div class="modal-content">
                 <div class="modal-header">
                     <slot name="header"></slot>
@@ -24,6 +24,33 @@
 
 export default {
 
+    props: {
+
+        size: undefined,
+
+        isScrollable: undefined
+    },
+
+    computed: {
+
+        modalClasses() {
+
+            return {
+                'modal-sm': this.size == 'sm',
+                'modal-lg': this.size == 'lg',
+                'modal-xl': this.size == 'xl',
+                'modal-dialog-scrollable': this.isScrollable    
+            }
+        },
+    }
 }
 
 </script>
+<style lang="scss">
+
+    .modal {
+        background: linear-gradient( rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7) );
+        display: block !important;
+    }
+
+</style>
