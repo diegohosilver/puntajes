@@ -11,6 +11,10 @@
 
     <ps-list-games ref="psListGames"></ps-list-games>
 
+    <ps-add-rounds ref="psAddRounds"></ps-add-rounds>
+
+    <ps-add-matches ref="psAddMatches"></ps-add-matches>
+
     <div class="jumbotron">
 
       <h1 class="display-4">Bienvenido Sabalero!</h1>
@@ -44,7 +48,19 @@
           class="btn btn-secondary btn-md"
           href="#"
           role="button"
-          @click="trigger('game-list-window:show')">Listar juego <span class="badge badge-light">{{ gameCount }}</span></a>
+          @click="trigger('game-list-window:show')">Listar juegos <span class="badge badge-light">{{ gameCount }}</span></a>
+
+          <a
+          class="btn btn-primary btn-md"
+          href="#"
+          role="button"
+          @click="trigger('match-add-window:show')">Agregar partida </a>
+
+        <a
+          class="btn btn-secondary btn-md"
+          href="#"
+          role="button"
+          @click="trigger('match-list-window:show')">Listar partidas <span class="badge badge-light">{{ gameCount }}</span></a>
       </p>
 
     </div>
@@ -57,6 +73,7 @@
           <div class="card">
             <div class="card-body">
               <h5 class="card-title">{{game.name}}</h5>
+              <button class="btn btn-sm btn-primary" @click="onEvent({name:'round-add-window:show', value: game})">Agregar Ronda</button>
             </div>
           </div>
 
@@ -76,6 +93,8 @@ import PsAddPlayers from './components/players/Add.vue';
 import PsListPlayers from './components/players/List.vue';
 import PsAddGames from './components/games/Add.vue';
 import PsListGames from './components/games/List.vue';
+import PsAddRounds from './components/rounds/Add.vue';
+import PsAddMatches from './components/match/Add.vue';
 
 export default {
 
@@ -84,7 +103,9 @@ export default {
     PsAddPlayers,
     PsListPlayers,
     PsAddGames,
-    PsListGames
+    PsListGames,
+    PsAddRounds,
+    PsAddMatches
   },
 
   data() {
@@ -146,6 +167,12 @@ export default {
             break;
         case 'game-list-window:show':
             this.$refs.psListGames.open();
+            break;
+        case 'round-add-window:show':
+            this.$refs.psAddRounds.open(value);
+            break;
+        case 'match-add-window:show':
+            this.$refs.psAddMatches.open();
             break;
       }
     }
