@@ -1,6 +1,6 @@
 <template>
 
-<ps-modal v-if="isOpen" @close="close">
+<ps-modal v-if="isOpen" @close="close" :isScrollable="true">
 
     <template v-slot:header>
 
@@ -11,6 +11,22 @@
     <template v-slot:body>
         
         <form>
+
+            <div class="form-group">
+
+                <label>Partida</label>
+
+                <select class="custom-select" v-model="selectedMatch">
+
+                    <option disabled selected :value="undefined">Seleccione una partida</option>
+
+                    <option v-for="match in matches" :value="match.id">
+                        {{match.name}} - {{formatDate(match.date)}}
+                    </option>
+
+                </select>
+
+            </div>
  
             <div class="form-group">
 
@@ -106,6 +122,8 @@ export default {
 
             isOpen: false,
 
+            selectedMatch: undefined,
+
             game: undefined,
 
             mode: 'deathmatch',
@@ -114,7 +132,11 @@ export default {
 
             selectedPlayers: [],
 
-            players: []
+            players: [],
+
+            matches: [],
+
+            format: "DD/MM/YYYY"
         }
     },
 
@@ -123,6 +145,8 @@ export default {
         open(value) {
 
             this.getPlayers();
+
+            this.getMatches();
 
             this.game = value;
 
@@ -138,6 +162,8 @@ export default {
             this.type = 'kills';
 
             this.selectedPlayers = [];
+
+            this.selectedMatch = undefined;
         },
 
         close() {
@@ -152,15 +178,25 @@ export default {
             this.players = this.$players.list();
         },
 
+        getMatches() {
+
+            this.matches = this.$matches.list();
+        },
+
         save() {
 
-            this.$round.add(this.game, this.mode, this.type, this.selectedPlayers);
+            this.$round.add(this.selectedMatch, this.game, this.mode, this.type, this.selectedPlayers);
 
             this.$events.emit('event:trigger', {name: 'round:add'});
 
             this.$notifications.success('Rounda agregada con éxito');
 
             this.defaultState();
+        },
+
+        formatDate(date) {
+
+            return this.$utils.formatDate(date, this.format);
         }
     }
 }
