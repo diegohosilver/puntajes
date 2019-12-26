@@ -18,6 +18,9 @@ import { Events } from './services/Events';
 import { Game } from './services/Game';
 import { Games } from './services/Games';
 import { GameStore } from './services/GameStore';
+import { Match } from './services/Match';
+import { Matches } from './services/Matches';
+import { MatchStore } from './services/MatchStore';
 import { Notifications } from './services/Notifications';
 import { Player } from './services/Player';
 import { Players } from './services/Players';
@@ -29,6 +32,7 @@ import { Utils } from './services/Utils';
 
 // Almacenamientos
 let gameStore = new GameStore({ name: 'Game store' });
+let matchStore = new MatchStore({ name: 'Match store' });
 let playerStore = new PlayerStore({ name: 'Player store' });
 let roundStore = new RoundStore({name: 'Round store'});
 
@@ -36,6 +40,9 @@ Vue.prototype.$events = Events;
 Vue.prototype.$game = new Game(gameStore);
 Vue.prototype.$games = new Games(gameStore);
 Vue.prototype.$gameStore = gameStore;
+Vue.prototype.$match = new Match(matchStore);
+Vue.prototype.$matches = new Matches(matchStore);
+Vue.prototype.$matchStore = matchStore;
 Vue.prototype.$notifications = Notifications;
 Vue.prototype.$player = new Player(playerStore);
 Vue.prototype.$players = new Players(playerStore);

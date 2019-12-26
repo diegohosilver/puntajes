@@ -1,3 +1,5 @@
+import moment from "moment";
+
 export const Utils = {
 
     generateId() {
@@ -8,5 +10,15 @@ export const Utils = {
             return (c=='x' ? r :(r&0x3|0x8)).toString(16);
         });
         return uuid;
+    },
+
+    formatDate(date, format) {
+
+        if (date) {
+            return moment(date).format(format);
+        }
+        else {
+            return moment(Date()).format(format);
+        }
     }
 }

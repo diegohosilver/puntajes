@@ -13,14 +13,14 @@
             <ul class="list-group">
                 <li v-for="(match, index) in matches" class="list-group-item d-flex justify-content-between align-items-center">
                     <span>
-                        <span class="text-success">{{match.name}}</span> - <span class="text-primary">{{match.tag}}</span>
+                        <span class="text-success">{{match.name}}</span> - <span class="text-primary">{{formatDate(match.date)}}</span>
                     </span>
                     <span class="badge badge-danger badge-pill" @click="confirmDelete(index, match)"><i class="fas fa-times"></i></span>
                 </li>
             </ul>
 
             <div v-if="!hasMatchs" class="alert alert-primary" role="alert">
-                No hay jugadores registrados!
+                No hay partidas registradas!
             </div>
 
         </template>
@@ -56,7 +56,9 @@ export default {
 
             indexToDelete: undefined,
 
-            matchToDelete: undefined
+            matchToDelete: undefined,
+
+            format: "DD/MM/YYYY"
         }
     },
 
@@ -69,7 +71,7 @@ export default {
 
         title() {
 
-            return 'Listar jugadores';
+            return 'Listar partidas';
         }
     },
 
@@ -93,7 +95,7 @@ export default {
 
             return {
                 title: 'Eliminar partida',
-                message: `¿Está seguro que desea eliminar a <b class="text-success">${this.matchToDelete.name}</b> (tag <b class="text-primary">${this.matchToDelete.tag}</b>)?`,
+                message: `¿Está seguro que desea eliminar a <b class="text-success">${this.matchToDelete.name}</b> (tag <b class="text-primary">${formatDate(this.matchToDelete.date)}</b>)?`,
                 event: 'match-delete'
             };
         },
@@ -102,8 +104,8 @@ export default {
 
             return {
                 title: 'Eliminar todas las partidas',
-                message: `¿Está seguro que desea eliminar <b class="text-danger">todas</b> las jugadores registrados?`,
-                event: 'match-bulk-delete'
+                message: `¿Está seguro que desea eliminar <b class="text-danger">todas</b> las partidas registradas?`,
+                event: 'match-delete'
             }
         },
 
@@ -153,6 +155,11 @@ export default {
             this.$notifications.success(`Todos los jugadores han sido eliminados con éxito`);
 
             this.$events.emit('event:trigger', {name: 'match:deleted'});
+        },
+
+        formatDate(date) {
+
+            return this.$utils.formatDate(date, this.format);
         }
     },
 

@@ -15,6 +15,8 @@
 
     <ps-add-matches ref="psAddMatches"></ps-add-matches>
 
+    <ps-list-matches ref="psListMatches"></ps-list-matches>
+
     <div class="jumbotron">
 
       <h1 class="display-4">Bienvenido Sabalero!</h1>
@@ -60,7 +62,7 @@
           class="btn btn-secondary btn-md"
           href="#"
           role="button"
-          @click="trigger('match-list-window:show')">Listar partidas <span class="badge badge-light">{{ gameCount }}</span></a>
+          @click="trigger('match-list-window:show')">Listar partidas <span class="badge badge-light">{{ matchCount }}</span></a>
       </p>
 
     </div>
@@ -95,6 +97,7 @@ import PsAddGames from './components/games/Add.vue';
 import PsListGames from './components/games/List.vue';
 import PsAddRounds from './components/rounds/Add.vue';
 import PsAddMatches from './components/match/Add.vue';
+import PsListMatches from './components/match/List.vue';
 
 export default {
 
@@ -105,7 +108,8 @@ export default {
     PsAddGames,
     PsListGames,
     PsAddRounds,
-    PsAddMatches
+    PsAddMatches,
+    PsListMatches
   },
 
   data() {
@@ -115,6 +119,8 @@ export default {
       playerCount: 0,
 
       gameCount: 0,
+
+      matchCount: 0,
 
       pinnedGames: []
     };
@@ -127,6 +133,8 @@ export default {
       this.playerCount = this.$players.list().length;
 
       this.gameCount = this.$games.list().length;
+
+      this.matchCount = this.$matches.list().length;
     },
 
     getPinnedGames() {
@@ -147,6 +155,8 @@ export default {
         case 'player:deleted':
         case 'game:add':
         case 'game:deleted':
+        case 'match:add':
+        case 'math:deleted':
             this.getCounters();
             this.getPinnedGames();
             break;
@@ -174,6 +184,8 @@ export default {
         case 'match-add-window:show':
             this.$refs.psAddMatches.open();
             break;
+        case 'match-list-window:show':
+            this.$refs.psListMatches.open(value);
       }
     }
   },

@@ -103,7 +103,7 @@ export default {
             return {
                 title: 'Eliminar todos los jugadores',
                 message: `¿Está seguro que desea eliminar <b class="text-danger">todos</b> los jugadores registrados?`,
-                event: 'player-bulk-delete'
+                event: 'player-delete'
             }
         },
 

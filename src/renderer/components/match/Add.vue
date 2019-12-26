@@ -114,6 +114,12 @@ export default {
 
         save() {
 
+            this.$match.add(this.name, this.date);
+
+            this.$events.emit('event:trigger', {name: 'match:add'});
+
+            this.$notifications.success('Partida agregada');
+
             this.defaultState();
         },
 
