@@ -159,7 +159,7 @@ export default {
 
         pinGame(game) {
 
-            game.isPinned = true;
+            this.$set(game, 'isPinned', true);
 
             this.$game.pin(game.id);
 
@@ -168,7 +168,7 @@ export default {
 
         unpinGame(game) {
 
-            game.isPinned = false;
+            this.$set(game, 'isPinned', false);
 
             this.$game.unpin(game.id);
 
