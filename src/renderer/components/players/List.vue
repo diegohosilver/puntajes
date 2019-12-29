@@ -103,7 +103,7 @@ export default {
             return {
                 title: 'Eliminar todos los jugadores',
                 message: `¿Está seguro que desea eliminar <b class="text-danger">todos</b> los jugadores registrados?`,
-                event: 'player-bulk-delete'
+                event: 'player-delete'
             }
         },
 
@@ -115,14 +115,14 @@ export default {
 
             this.isOpen = false;
 
-            this.$events.emit('event:trigger', {name: 'confirmation:show', value: this.buildConfirmation()});
+            this.$events.emit('event:trigger', {name: 'confirmation-window:show', value: this.buildConfirmation()});
         },
 
         confirmDeleteAll() {
 
             this.isOpen = false;
 
-            this.$events.emit('event:trigger', {name: 'confirmation:show', value: this.buildConfirmationBulk()});
+            this.$events.emit('event:trigger', {name: 'confirmation-window:show', value: this.buildConfirmationBulk()});
         },
 
         deletePlayer({value}) {

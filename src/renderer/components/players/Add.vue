@@ -86,7 +86,8 @@ export default {
             this.isOpen = true;
         },
 
-        close() {
+        defaultState() {
+
             this.playerNameTouched = false;
 
             this.playerName = undefined;
@@ -94,6 +95,10 @@ export default {
             this.playerTagTouched = false;
 
             this.playerTag = undefined;
+        },
+
+        close() {
+            this.defaultState();
 
             this.isOpen = false;
         },
@@ -106,7 +111,7 @@ export default {
 
             this.$notifications.success('Jugador agregado');
 
-            this.close();
+            this.defaultState();
         },
 
         inputClass(model, touched) {
@@ -135,8 +140,4 @@ export default {
 </script>
 <style lang="scss">
 
-    .invalid-feedback, 
-    .valid-feedback {
-        display: block !important;
-    }
 </style>
