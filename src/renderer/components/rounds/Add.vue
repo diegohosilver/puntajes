@@ -14,13 +14,25 @@
 
             <div class="form-group">
 
+                <label>Cantidad</label>
+
+                <input type="number" class="form-control" :class="inputClass(amount, amountTouched)" v-model.number="amount" @input="amountTouched = true">
+
+                <div v-if="amountTouched" :class="feedbackClass(amount)">
+                    {{ feedbackMessage(amount) }}
+                </div>
+
+            </div>
+
+            <div class="form-group">
+
                 <label>Partida</label>
 
                 <select class="custom-select" v-model="selectedMatch">
 
                     <option disabled selected :value="undefined">Seleccione una partida</option>
 
-                    <option v-for="match in matches" :value="match.id">
+                    <option v-for="match in matches" :value="match">
                         {{match.name}} - {{formatDate(match.date)}}
                     </option>
 
@@ -30,7 +42,7 @@
  
             <div class="form-group">
 
-                <label for="playerName">Juego</label>
+                <label>Juego</label>
 
                 <input type="text" class="form-control disabled" disabled :value="game.name">
 
@@ -71,7 +83,7 @@
 
                 <select class="custom-select" multiple size="4" v-model="selectedPlayers">
 
-                    <option v-for="player in players" :value="player.id">
+                    <option v-for="player in players" :value="player">
                         {{player.name}} - {{player.tag}}
                     </option>
 
@@ -113,7 +125,7 @@ export default {
 
         canSave() {
 
-            return this.selectedPlayers.length > 0;
+            return this.amount && this.selectedMatch && this.selectedPlayers.length > 0;
         }
     },
 
@@ -121,6 +133,10 @@ export default {
         return {
 
             isOpen: false,
+
+            amount: 1,
+
+            amountTouched: false,
 
             selectedMatch: undefined,
 
@@ -155,7 +171,9 @@ export default {
 
         defaultState() {
 
-            this.game = undefined;
+            this.amount = 1;
+
+            this.amountTouched = false;
 
             this.mode = 'deathmatch';
 
@@ -167,6 +185,8 @@ export default {
         },
 
         close() {
+
+			this.game = undefined;
 
             this.defaultState();
 
@@ -185,13 +205,36 @@ export default {
 
         save() {
 
-            this.$round.add(this.selectedMatch, this.game, this.mode, this.type, this.selectedPlayers);
+            for (let i = 0; i < this.amount; i ++) {
+                this.$round.add(this.selectedMatch, this.game, this.mode, this.type, this.selectedPlayers);
+            }       
 
             this.$events.emit('event:trigger', {name: 'round:add'});
 
             this.$notifications.success('Rounda agregada con éxito');
 
             this.defaultState();
+        },
+
+        inputClass(model, touched) {
+            if (!touched) return {};
+
+            return  {
+                'is-invalid': !model,
+                'is-valid': model
+            };
+        },
+
+        feedbackClass(model) {
+
+            return {
+                'invalid-feedback': !model,
+                'valid-feedback': model
+            }
+        },
+
+        feedbackMessage(model) {
+            return model ? 'Bien hecho!' : 'El número de rondas debe ser al menos 1';
         },
 
         formatDate(date) {
