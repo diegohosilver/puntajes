@@ -20,5 +20,10 @@ export const Utils = {
         else {
             return moment(Date()).format(format);
         }
-    }
+	},
+	
+	isNumber(value) {
+
+		return !isNaN(Number(value));
+	}
 }

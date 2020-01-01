@@ -26,7 +26,7 @@
 
 									<button type="button" class="btn btn-sm btn-danger" @click="confirmDelete(index, round)"><i class="fas fa-times"></i></button>
 
-									<button type="button" class="btn btn-sm btn-secondary">Resultados</button>
+									<button type="button" class="btn btn-sm btn-primary" @click="addResult(round)">Resultados</button>
 									
 								</div>
 
@@ -143,12 +143,14 @@ export default {
 
 			this.game = game;
 
-			this.rounds = this.$rounds.list();
+			this.rounds = this.$rounds.list().filter(x => x.game.id === game.id);
 		},
 		
 		defaultState() {
 
 			this.game = undefined;
+
+			this.rounds = [];
 		},
 
         close(){
@@ -237,14 +239,23 @@ export default {
             this.$notifications.success(`Todos las rondas han sido eliminadas con éxito`);
 
             this.$events.emit('event:trigger', {name: 'round:deleted'});
-        }
+		},
+		
+		addResult(round) {
+
+			this.isOpen = false;
+
+			this.$events.emit("result-add-window:show", {value: round});
+		}
 	},
 	
 	created() {
 
         this.$events.on('confirmation:round-delete', this.deleteRound);
 
-        this.$events.on('confirmation:round-bulk-delete', this.deleteAllRounds);
+		this.$events.on('confirmation:round-bulk-delete', this.deleteAllRounds);
+		
+		this.$events.on('result-window-add:close', () => { this.isOpen = true });
     }
 }
 </script>
