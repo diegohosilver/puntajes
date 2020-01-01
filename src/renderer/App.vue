@@ -19,6 +19,8 @@
 
 		<ps-list-matches ref="psListMatches"></ps-list-matches>
 
+		<ps-add-results ref="psAddResults"></ps-add-results>
+
 		<div class="jumbotron">
 
 			<h1 class="display-4">Bienvenido Sabalero!</h1>
@@ -111,6 +113,7 @@ import PsAddRounds from "./components/rounds/Add.vue";
 import PsListRounds from "./components/rounds/List.vue";
 import PsAddMatches from "./components/match/Add.vue";
 import PsListMatches from "./components/match/List.vue";
+import PsAddResults from "./components/results/Add.vue";
 
 export default {
 
@@ -123,7 +126,8 @@ export default {
 	PsAddRounds,
 	PsListRounds,
 	PsAddMatches,
-	PsListMatches
+	PsListMatches,
+	PsAddResults
   },
 
   data() {
@@ -242,6 +246,7 @@ export default {
 			
 		case "match-list-window:show":
 			this.$refs.psListMatches.open(value);
+			break;
 		}
     }
   },
