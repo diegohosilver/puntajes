@@ -245,7 +245,7 @@ export default {
 
 			this.isOpen = false;
 
-			this.$events.emit("result-add-window:show", {value: round});
+			this.$events.emit('event:trigger', {name: 'result-add-window:show', value: round});
 		}
 	},
 	
