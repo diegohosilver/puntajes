@@ -85,7 +85,7 @@ export default {
 
 			typingTimer: undefined,
 
-			doneTypingInterval: 2000
+			doneTypingInterval: 500
 		}
 	},
 

@@ -7,5 +7,10 @@ export class Rounds {
     list() {
 
         return this.roundStore.getRounds().rounds;
-    }
+	}
+	
+	listResults() {
+
+		return this.roundStore.getResults().results;
+	}
 }

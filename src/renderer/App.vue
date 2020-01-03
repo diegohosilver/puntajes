@@ -21,6 +21,8 @@
 
 		<ps-add-results ref="psAddResults"></ps-add-results>
 
+		<ps-list-results ref="psListResults"></ps-list-results>
+
 		<div class="jumbotron">
 
 			<h1 class="display-4">Bienvenido Sabalero!</h1>
@@ -60,15 +62,26 @@
 					Listar partidas
 					<span class="badge badge-light">{{ matchCount }}</span>
 				</a>
+
+				<a class="btn btn-success btn-md" href="#" role="button" @click="trigger('result-list-window:show')">
+					Ver resultados
+					<i class="far fa-chart-bar"></i>
+				</a>
 			</p>
 
 		</div>
 
 		<div class="jumbotron">
 
+			<p class="lead">
+				Juegos anclados
+			</p>
+
+			<hr class="my-4" />
+
 			<div class="row">
 
-				<div class="col-3" v-for="game in pinnedGames">
+				<div class="col-3 mr-2" v-for="game in pinnedGames">
 
 					<div class="card" style="min-width: 300px">
 
@@ -99,6 +112,11 @@
 
 		</div>
 
+		<footer class="container">
+			<p class="float-right text-primary"><i class="fab fa-github"></i> le0dime</p>
+			<p>© 2019-2020</p>
+		</footer>
+
 	</div>
 
 </template>
@@ -114,6 +132,7 @@ import PsListRounds from "./components/rounds/List.vue";
 import PsAddMatches from "./components/match/Add.vue";
 import PsListMatches from "./components/match/List.vue";
 import PsAddResults from "./components/results/Add.vue";
+import PsListResults from "./components/results/List.vue";
 
 export default {
 
@@ -127,7 +146,8 @@ export default {
 	PsListRounds,
 	PsAddMatches,
 	PsListMatches,
-	PsAddResults
+	PsAddResults,
+	PsListResults
   },
 
   data() {
@@ -246,6 +266,14 @@ export default {
 			
 		case "match-list-window:show":
 			this.$refs.psListMatches.open(value);
+			break;
+
+		case "result-add-window:show":
+			this.$refs.psAddResults.open(value);
+			break;
+
+		case "result-list-window:show":
+			this.$refs.psListResults.open();
 			break;
 		}
     }

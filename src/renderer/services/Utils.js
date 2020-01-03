@@ -25,5 +25,21 @@ export const Utils = {
 	isNumber(value) {
 
 		return !isNaN(Number(value));
+	},
+
+	stringArrayToObjectArray(stringArray) {
+
+		let aux = [];
+
+		stringArray.forEach(item => {
+			aux.push(JSON.parse(item));
+		});
+
+		return aux;
+	},
+
+	flatArray(array) {
+
+		return [].concat.apply([], array);
 	}
 }
