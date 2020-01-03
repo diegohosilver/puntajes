@@ -1,6 +1,6 @@
 <template>
 
-	<ps-modal v-if="isOpen" @close="close" :size="'lg'" :isScrollable="true">
+	<ps-modal v-if="isOpen" @close="close" :size="'lg'" :isScrollable="!winner">
 
 		<template v-slot:header>
 
@@ -10,62 +10,79 @@
 
 		<template v-slot:body>
 
-			<form>
+			<template v-if="!winner">
 
-				<div class="form-group">
+				<form>
 
-					<label>Partida</label>
+					<div class="form-group">
 
-					<select class="custom-select" v-model="selectedMatch">
+						<label>Partida</label>
 
-						<option disabled selected :value="undefined">Seleccione una partida</option>
+						<select class="custom-select" v-model="selectedMatch">
 
-						<option v-for="match in matches" :value="match">
-							{{match.name}} - {{formatDate(match.date)}}
-						</option>
+							<option disabled selected :value="undefined">Seleccione una partida</option>
 
-					</select>
+							<option v-for="match in matches" :value="match">
+								{{match.name}} - {{formatDate(match.date)}}
+							</option>
 
-				</div>
+						</select>
 
-			</form>
+					</div>
 
-			<div v-for="player in players" class="row">
+				</form>
 
-				<div class="col-12">
+				<div v-for="player in players" class="row">
 
-					<div class="card text-white bg-dark mb-3">
+					<div class="col-12">
 
-						<div class="card-body">
+						<div class="card text-white bg-dark mb-3">
 
-							<h5 class="card-title">{{player.name}} - {{player.tag}}</h5>
+							<div class="card-body">
 
-							<div class="card-text">
+								<h5 class="card-title">{{player.name}} - {{player.tag}}</h5>
 
-								<ul>
+								<div class="card-text">
 
-									<li v-for="game in player.games">
+									<ul>
 
-										{{game.name}}:
+										<li v-for="game in player.games">
 
-										{{listScores(game.results.kills)}}
+											{{game.name}}:
 
-									</li>
+											{{listScores(game.results.kills)}}
 
-								</ul>
+										</li>
+
+									</ul>
+
+								</div>
 
 							</div>
-
 						</div>
+
 					</div>
 
 				</div>
 
-			</div>
+			</template>
+			
+			<template v-else>
+
+				<div class="pyro">
+					<div class="before"></div>
+					<div class="after"></div>
+				</div>
+
+				<h1>{{winner.name}} es el sabalero de este año!</h1>
+
+			</template>
 
 		</template>
 
 		<template v-slot:footer>
+
+			<button type="button" class="btn btn-sm btn-primary" @click="getWinner">Obtener ganador</button>
 
 			<button type="button" class="btn btn-sm btn-secondary" @click="close">Cerrar</button>
 
@@ -108,6 +125,10 @@ export default {
 
 			results: [],
 
+			playerScores: [],
+
+			winner: undefined,
+
 			format: "DD/MM/YYYY"
 		}
 	},
@@ -146,6 +167,10 @@ export default {
 			this.players = [];
 
 			this.results = [];
+
+			this.playerScores = [];
+
+			this.winner = undefined;
 		},
 
 		formatDate(date) {
@@ -227,6 +252,34 @@ export default {
 			let index = word.lastIndexOf('+');
 
 			return `${word.substring(0, index)} = ${sum}`;
+		},
+
+		getWinner() {
+
+			this.players.forEach(player => {
+
+				let totalKills = 0;
+
+				player.games.forEach(game => {
+
+					let size = game.results.kills.length; // Obtenemos la cantidad de rondas
+
+					let killsPerGame = game.results.kills.reduce((a, b) => a + b, 0); // Sumamos la cantidad de asesinatos
+
+					totalKills += killsPerGame / size;
+				});
+
+				let totalScore = totalKills / player.games.length;
+
+				this.playerScores.push({ name: player.name, score: totalScore });
+
+				totalKills = 0;
+			});
+
+			let result = Math.max.apply(Math, this.playerScores.map((o) => { return o.score; }))
+
+			this.winner = this.playerScores.find((o) => { return o.score == result; })
+
 		}
 	},
 
@@ -248,6 +301,126 @@ export default {
 }
 
 </script>
-<style>
+<style lang="scss">
+
+	$particles: 50;
+	$width: 500;
+	$height: 500;
+
+	// Crear la explosión
+	$box-shadow: ();
+	$box-shadow2: ();
+
+	@for $i from 0 through $particles {
+		$box-shadow: $box-shadow,
+					random($width)-$width / 2 + px
+					random($height)-$height / 1.2 + px
+					hsl(random(360), 100, 50);
+		$box-shadow2: $box-shadow2, 0 0 #fff
+	}
+
+	@mixin keyframes ($animationName) {
+		@-webkit-keyframes #{$animationName} {
+			@content;
+		}
+
+		@-moz-keyframes #{$animationName} {
+			@content;
+		}
+
+		@-o-keyframes #{$animationName} {
+			@content;
+		}
+
+		@-ms-keyframes #{$animationName} {
+			@content;
+		}
+
+		@keyframes #{$animationName} {
+			@content;
+		}
+	}
+
+	@mixin animation-delay ($settings) {
+		-moz-animation-delay: $settings;
+		-webkit-animation-delay: $settings;
+		-o-animation-delay: $settings;
+		-ms-animation-delay: $settings;
+		animation-delay: $settings;
+	}
+
+	@mixin animation-duration ($settings) {
+		-moz-animation-duration: $settings;
+		-webkit-animation-duration: $settings;
+		-o-animation-duration: $settings;
+		-ms-animation-duration: $settings;
+		animation-duration: $settings;
+	}
+
+	@mixin animation ($settings) {
+		-moz-animation: $settings;
+		-webkit-animation: $settings;
+		-o-animation: $settings;
+		-ms-animation: $settings;
+		animation: $settings;
+	}
+
+	@mixin transform ($settings) {
+		transform: $settings;
+		-moz-transform: $settings;
+		-webkit-transform: $settings;
+		-o-transform: $settings;
+		-ms-transform: $settings;
+	}
+
+	.pyro > .before, .pyro > .after {
+		position: absolute;
+		width: 5px;
+		height: 5px;
+		border-radius: 50%;
+		box-shadow: $box-shadow2;
+		@include animation((1s bang ease-out infinite backwards, 1s gravity ease-in infinite backwards, 5s position linear infinite backwards));
+	}
+		
+	.pyro > .after {
+		@include animation-delay((1.25s, 1.25s, 1.25s));
+		@include animation-duration((1.25s, 1.25s, 6.25s));
+	}
+			
+	@include keyframes(bang) {
+		to {
+			box-shadow:$box-shadow;
+		}
+	}
+		
+	@include keyframes(gravity)  {
+		to {
+			@include transform(translateY(200px));
+			opacity: 0;
+		}
+	}
+		
+	@include keyframes(position) {
+	0%, 19.9% {
+		margin-top: 10%;
+		margin-left: 40%;
+	}
+	20%, 39.9% {
+		margin-top: 40%;
+		margin-left: 30%;
+	}
+	40%, 59.9% {  
+		margin-top: 20%;
+		margin-left: 70%
+	}
+	60%, 79.9% {  
+		margin-top: 30%;
+		margin-left: 20%;
+	}
+	80%, 99.9% {  
+		margin-top: 30%;
+		margin-left: 80%;
+	}
+	}
 
 </style>

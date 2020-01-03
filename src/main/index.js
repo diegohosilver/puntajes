@@ -7,7 +7,7 @@ const isDevelopment = process.env.NODE_ENV !== 'production'
 app.on('ready', () => {
   let window = new BrowserWindow({
     width: 1280,
-    height: 720,
+    height: 760,
     webPreferences: {
       nodeIntegration: true
     }

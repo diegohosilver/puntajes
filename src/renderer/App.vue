@@ -73,6 +73,12 @@
 
 		<div class="jumbotron">
 
+			<p class="lead">
+				Juegos anclados
+			</p>
+
+			<hr class="my-4" />
+
 			<div class="row">
 
 				<div class="col-3 mr-2" v-for="game in pinnedGames">
@@ -105,6 +111,11 @@
 			</div>
 
 		</div>
+
+		<footer class="container">
+			<p class="float-right text-primary"><i class="fab fa-github"></i> le0dime</p>
+			<p>© 2019-2020</p>
+		</footer>
 
 	</div>
 
